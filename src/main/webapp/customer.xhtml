@@ -10,22 +10,40 @@
     <h:body>
         <p>Customers</p>
         <h:form id="custForm">
-            <p:panelGrid columns="2">
-                <p:outputLabel for="custID" value="Customer ID:"/>
-                <h:selectOneMenu id="custID">
-                    <f:selectItem itemLabel="111" itemValue="111"/>
-                    <f:selectItem itemLabel="222" itemValue="222"/>
-                    <f:selectItem itemLabel="333" itemValue="333"/>
-                </h:selectOneMenu>
-                
+            <p:panelGrid columns="2">               
+
                 <p:outputLabel for="custname" value="Customer Name:"/>
-                <p:inputText id="custname"/>
+                <p:inputText id="custname" value="#{onetomanyController.customer.customerName}"/>
+
             </p:panelGrid>
-            <p:commandButton value="Submit" update="custTable"/>
+            <p:commandButton value="Submit" actionListener="#{customerBean.addCustomer(onetomanyController.customer)}" update="custTable"/>
         </h:form>
-        <h:form id="custTable">
-            <p:dataTable></p:dataTable>
-        </h:form>
+        <p>
+            <h:form id="custTable">
+                <p:dataTable var="customer" 
+                             value="#{onetomanyController.customers}" 
+                             rendered="#{onetomanyController.customers.size() > 0}">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Customer ID"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.customerId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Customer Name"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.customerName}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Customer Created On"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.dateCustomerCreated}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p>
     </h:body>
 </html>
 
