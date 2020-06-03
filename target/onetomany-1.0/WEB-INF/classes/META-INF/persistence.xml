@@ -5,10 +5,11 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <!--        <jta-data-source>jdbc/postgres</jta-data-source>-->
     <!--        <jta-data-source>java:/PostgresDS</jta-data-source>-->
-    <jta-data-source>java:/MySqlDS</jta-data-source>    
+    <jta-data-source>java:/MySqlDS</jta-data-source>
     <class>com.diljeet.onetomany.entity.Customer</class>
+    <class>com.diljeet.onetomany.entity.Order</class>
     <properties>
-      <property name="eclipselink.ddl-generation" value="none"/>
+      <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
     </properties>
   </persistence-unit>
 </persistence>

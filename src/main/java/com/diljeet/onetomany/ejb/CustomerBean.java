@@ -9,6 +9,7 @@ import com.diljeet.onetomany.entity.Customer;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -19,7 +20,7 @@ import javax.persistence.PersistenceContext;
  * @author diljeet
  */
 @Named
-@Stateless
+@Stateful
 public class CustomerBean {
 
     // Add business logic below. (Right-click in editor and choose
@@ -51,5 +52,6 @@ public class CustomerBean {
         }
         
         return customers;
-    }
+    }    
+    
 }

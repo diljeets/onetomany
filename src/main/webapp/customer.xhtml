@@ -13,21 +13,26 @@
             <p:panelGrid columns="2">               
 
                 <p:outputLabel for="custname" value="Customer Name:"/>
-                <p:inputText id="custname" value="#{onetomanyController.customer.customerName}"/>
+                <p:inputText id="custname" value="#{customerController.customer.customerName}"/>
 
             </p:panelGrid>
-            <p:commandButton value="Submit" actionListener="#{customerBean.addCustomer(onetomanyController.customer)}" update="custTable"/>
+            <p>
+                <p:commandButton value="Submit" actionListener="#{customerBean.addCustomer(customerController.customer)}" update="custTable"/>
+            </p>
         </h:form>
         <p>
             <h:form id="custTable">
                 <p:dataTable var="customer" 
-                             value="#{onetomanyController.customers}" 
-                             rendered="#{onetomanyController.customers.size() > 0}">
+                             value="#{customerController.customers}" 
+                             rendered="#{customerController.customers.size() > 0}">
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Customer ID"/>
-                        </f:facet>
-                        <h:outputText value="#{customer.customerId}"/>
+                        </f:facet>    
+                        <p:commandLink action="orders">
+                            <h:outputText value="#{customer.customerId}"/>    
+                            <f:setPropertyActionListener target="#{customerController.currentCustomer}" value="#{customer.customerId}"/>
+                        </p:commandLink>
                     </p:column>
                     <p:column>
                         <f:facet name="header">

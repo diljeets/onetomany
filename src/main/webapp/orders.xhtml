@@ -1,12 +1,40 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <p>Place Orders for Customer ID #{customerController.currentCustomer}</p>
+        <p>
+            <h:form>
+                <p:panelGrid columns="2">
+                    <p:outputLabel for="custId" value="Customer ID:"/>
+                    <p:inputText id="custId" value="#{customerController.currentCustomer}"/>
+                    
+                    <p:outputLabel for="item" value="Item:"/>
+                    <p:inputText id="item" value="#{orderController.order.item}"/>
+                    
+                    <p:outputLabel for="quantity" value="Quantity:"/>
+                    <p:inputText id="quantity" value="#{orderController.order.quantity}"/>
+                </p:panelGrid>
+                <p>
+                    <p:commandButton value="Place Order" actionListener="#{orderBean.addOrder(orderController.order)}">
+                        <f:param name="customerId" value="#{customerController.currentCustomer}"/>
+                    </p:commandButton>
+                </p>
+            </h:form>
+        </p>
+        <p>
+            <h:form>
+                <p:commandLink action="customer">
+                    <h:outputText value="Back to Customer Page"/>
+                </p:commandLink>
+            </h:form>
+        </p>
     </h:body>
 </html>
 

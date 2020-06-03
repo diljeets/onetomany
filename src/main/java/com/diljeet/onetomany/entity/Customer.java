@@ -6,12 +6,18 @@
 package com.diljeet.onetomany.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,14 +35,18 @@ import javax.persistence.TemporalType;
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int customerId;
-    
+
     private String customerName;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCustomerCreated;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")    
+    private List<Order> orders = new ArrayList<>();
 
     public Customer() {
         Date date = new Date();
@@ -63,10 +73,28 @@ public class Customer implements Serializable {
         return dateCustomerCreated;
     }
 
-    public void setDateCustomerCreated(Date dateCustomerCreated) {        
+    public void setDateCustomerCreated(Date dateCustomerCreated) {
         this.dateCustomerCreated = dateCustomerCreated;
     }
-    
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setCustomer(this);
+    }
+
+    public void removeOrder(Order order) {
+        orders.remove(order);
+        order.setCustomer(null);
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -91,5 +119,5 @@ public class Customer implements Serializable {
     public String toString() {
         return "com.diljeet.onetomany.entity.Customer[ id=" + customerId + " ]";
     }
-    
+
 }
