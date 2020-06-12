@@ -17,34 +17,54 @@
 
             </p:panelGrid>
             <p>
-                <p:commandButton value="Submit" actionListener="#{customerBean.addCustomer(customerController.customer)}" update="custTable"/>
+                <p:commandButton value="Submit" actionListener="#{customerController.addCustomer(customerController.customer)}" update="custForm custDataTableForm"/>
             </p>
         </h:form>
         <p>
-            <h:form id="custTable">
-                <p:dataTable var="customer" 
+            <h:form id="custDataTableForm">
+                <p:dataTable id="custDataTable" 
+                             var="customer" 
                              value="#{customerController.customers}" 
-                             rendered="#{customerController.customers.size() > 0}">
+                             rendered="#{customerController.customers.size() > 0}"
+                             editable="true">
+<!--                    <p:ajax event="cellEdit" listener="#{customerController.onCellEdit}" update="custDataTable" />-->
+                    <p:ajax event="rowEdit" listener="#{customerController.onRowEdit}" update=":custDataTableForm:custDataTable"/>                  
+                    <p:ajax event="rowEditCancel" listener="#{customerController.onRowCancel}" update=":custDataTableForm:custDataTable"/>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Customer ID"/>
-                        </f:facet>    
-                        <p:commandLink action="orders">
+                        </f:facet>                           
+                        <p:commandLink action="orders.xhtml?faces-redirect=true"  actionListener="#{orderController.fetchOrdersByCurrentCustomer(customer.customerId)}">
                             <h:outputText value="#{customer.customerId}"/>    
-                            <f:setPropertyActionListener target="#{customerController.currentCustomer}" value="#{customer.customerId}"/>
+                            <f:setPropertyActionListener target="#{orderController.currentCustomer}" value="#{customer.customerId}"/>
+                            <f:setPropertyActionListener target="#{orderController.queryString}" value=""/>
                         </p:commandLink>
                     </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="Customer Name"/>
+                    <p:column headerText="Customer Name">
+                        <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{customer.customerName}"/>
                         </f:facet>
-                        <h:outputText value="#{customer.customerName}"/>
+                        <f:facet name="input">
+                            <p:inputText value="#{customer.customerName}"/>
+                        </f:facet>
+                        </p:cellEditor>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="Customer Created On"/>
                         </f:facet>
                         <h:outputText value="#{customer.dateCustomerCreated}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Customer Updated On"/>
+                        </f:facet>
+                        <h:outputText value="#{customer.dateCustomerUpdated}"/>
+                    </p:column>
+                    <p:column headerText="Actions" style="width:100px">
+                        <p:rowEditor />
+                        <p:commandLink value="Delete" actionListener="#{customerController.deleteCustomerById(customer.customerId)}" update=":custDataTableForm:custDataTable"/> 
                     </p:column>
                 </p:dataTable>
             </h:form>

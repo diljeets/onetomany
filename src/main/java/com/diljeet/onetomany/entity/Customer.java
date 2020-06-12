@@ -44,13 +44,16 @@ public class Customer implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCustomerCreated;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCustomerUpdated;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")    
     private List<Order> orders = new ArrayList<>();
 
     public Customer() {
-        Date date = new Date();
-        this.setDateCustomerCreated(date);
+        dateCustomerCreated = new Date();
+        //this.setDateCustomerCreated(dateCustomerCreated);
     }
 
     public int getCustomerId() {
@@ -74,8 +77,16 @@ public class Customer implements Serializable {
     }
 
     public void setDateCustomerCreated(Date dateCustomerCreated) {
-        this.dateCustomerCreated = dateCustomerCreated;
+        this.dateCustomerCreated = new Date();
     }
+
+    public Date getDateCustomerUpdated() {
+        return dateCustomerUpdated;
+    }
+
+    public void setDateCustomerUpdated(Date dateCustomerUpdated) {
+        this.dateCustomerUpdated = dateCustomerUpdated;
+    }  
 
     public List<Order> getOrders() {
         return orders;
@@ -93,7 +104,8 @@ public class Customer implements Serializable {
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);
-    }
+    }  
+   
 
     @Override
     public int hashCode() {

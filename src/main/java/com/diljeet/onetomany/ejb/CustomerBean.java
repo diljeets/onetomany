@@ -6,6 +6,7 @@
 package com.diljeet.onetomany.ejb;
 
 import com.diljeet.onetomany.entity.Customer;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class CustomerBean {
     public void addCustomer(Customer customer){
         try{
             if(customer != null){
-                em.persist(customer);
+                em.persist(customer);    
             } else {
                 return;
             }
@@ -53,5 +54,38 @@ public class CustomerBean {
         
         return customers;
     }    
+    
+    public void updateByCustomerId(Customer customer){
+        int custId = customer.getCustomerId();
+        try{
+            Customer existingCustomer = em.find(Customer.class, custId);
+            if(existingCustomer != null){                
+                existingCustomer.setCustomerName(customer.getCustomerName());
+                existingCustomer.setDateCustomerUpdated(new Date());
+            }
+            else{
+                return;
+            }
+        } catch(Exception e){
+           logger.log(Level.SEVERE, "Error updating customer {0}", e.toString());
+        }
+        
+    }
+
+    public void deleteCustomerById(int custId) {
+        try{
+            Customer existingCustomer = em.find(Customer.class, custId);
+            if(existingCustomer != null){                
+                em.remove(existingCustomer);
+            }
+            else{
+                return;
+            }
+        } catch(Exception e){
+           logger.log(Level.SEVERE, "Error deleting customer {0}", e.toString());
+        }
+    }
+    
+     
     
 }

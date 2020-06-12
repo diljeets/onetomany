@@ -6,6 +6,7 @@
 package com.diljeet.onetomany.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -21,6 +26,20 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "customer_order")
+@NamedQueries({
+    @NamedQuery(
+        name = "fetchAllOrders",
+        query = "SELECT o FROM Order o"
+    ),
+    @NamedQuery(
+        name = "fetchOrdersById",
+        query = "SELECT DISTINCT o FROM Order o, IN (o.customer.orders) c where c.customer.customerId = :customerId"
+    )
+})
+//@NamedQuery(
+//        name = "getOrders",
+//        query = "SELECT o FROM Order o ORDER BY o.id"
+//)
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,14 +52,20 @@ public class Order implements Serializable {
     
     private String item;
     
-    private int quantity;
+    private String quantity;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderCreated;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date orderUpdated;
     
     @ManyToOne
     @JoinColumn(name = "CUSTOMER_CUSTOMERID")
     private Customer customer;
 
     public Order() {
-        
+        orderCreated = new Date();        
     }    
     
     public Long getId() {
@@ -67,13 +92,29 @@ public class Order implements Serializable {
         this.item = item;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
+
+    public Date getOrderCreated() {
+        return orderCreated;
+    }
+
+    public void setOrderCreated(Date orderCreated) {
+        this.orderCreated = new Date();
+    }
+
+    public Date getOrderUpdated() {
+        return orderUpdated;
+    }
+
+    public void setOrderUpdated(Date orderUpdated) {
+        this.orderUpdated = orderUpdated;
+    }    
 
     public Customer getCustomer() {
         return customer;
@@ -82,7 +123,7 @@ public class Order implements Serializable {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
-
+    
    
     
     @Override

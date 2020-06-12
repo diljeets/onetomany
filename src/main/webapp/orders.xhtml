@@ -8,33 +8,113 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p>Place Orders for Customer ID #{customerController.currentCustomer}</p>
+        <p>Place Orders for Customer ID #{orderController.currentCustomer}</p>
         <p>
-            <h:form>
+            <h:form id="orderForm">
                 <p:panelGrid columns="2">
                     <p:outputLabel for="custId" value="Customer ID:"/>
-                    <p:inputText id="custId" value="#{customerController.currentCustomer}"/>
-                    
+                    <p:inputText id="custId" value="#{orderController.currentCustomer}" disabled="true"/>
+
                     <p:outputLabel for="item" value="Item:"/>
                     <p:inputText id="item" value="#{orderController.order.item}"/>
-                    
+
                     <p:outputLabel for="quantity" value="Quantity:"/>
                     <p:inputText id="quantity" value="#{orderController.order.quantity}"/>
                 </p:panelGrid>
                 <p>
-                    <p:commandButton value="Place Order" actionListener="#{orderBean.addOrder(orderController.order)}">
-                        <f:param name="customerId" value="#{customerController.currentCustomer}"/>
+                    <p:commandButton value="Place Order" actionListener="#{orderController.addOrder(orderController.order , orderController.currentCustomer)}" update="orderForm myDatatable">
+<!--                        <f:param name="customerId" value="#{orderController.currentCustomer}"/>-->
                     </p:commandButton>
                 </p>
             </h:form>
         </p>
         <p>
             <h:form>
-                <p:commandLink action="customer">
+                <p:link outcome="customer?faces-redirect=true">
                     <h:outputText value="Back to Customer Page"/>
-                </p:commandLink>
+                </p:link>
             </h:form>
         </p>
+        <p>
+            <h:form>
+                <p:toolbar>
+                    <f:facet name="right">
+                        <p:commandButton value="Fetch All Orders" actionListener="#{orderController.fetchAllOrders()}" update="myDatatable" style="margin-right: 20px">
+                            <f:setPropertyActionListener target="#{orderController.queryString}" value="all"/>
+                        </p:commandButton>
+                        
+                        <p:inputText id="searchCustomer" value="#{orderController.searchCustomer}" placeholder="Search Customer"/>
+                        <p:commandButton value="Search" actionListener="#{orderController.fetchOrdersById()}" update="myDatatable">
+                            <f:setPropertyActionListener target="#{orderController.queryString}" value="search"/>
+                        </p:commandButton>
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+        </p>
+        <p>
+
+
+            <h:form id="myDatatable">
+                <p:growl id="msgs" showDetail="true"/>
+                <p:dataTable id="thisDataTable"
+                             value="#{orderController.orders}"
+                             var = "order"
+                             rendered="#{orderController.orders.size() > 0}"
+                             editable="true" >   
+                    <f:facet name="header"></f:facet>                    
+                    <p:ajax event="rowEdit" listener="#{orderController.onRowEdit}" update=":myDatatable:msgs :myDatatable:thisDataTable"/>                  
+                    <p:ajax event="rowEditCancel" listener="#{orderController.onRowCancel}" update=":myDatatable:msgs :myDatatable:thisDataTable"/>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Id"/>
+                        </f:facet>                            
+                        <h:outputText value="#{order.id}"/>
+                    </p:column>
+
+                    <p:column headerText="item">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{order.item}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{order.item}" label="item"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="quantity">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{order.quantity}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{order.quantity}" label="quantity"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Actions" style="width:100px">
+                        <p:rowEditor />
+                        <p:commandLink actionListener="#{orderController.deleteOrderById(order.id)}" update=":myDatatable:msgs :myDatatable:thisDataTable">
+                            <h:outputText value="Delete"/>
+                        </p:commandLink>
+                    </p:column>
+                    <!--                                        <p:column>
+                                                                <f:facet name="header">
+                                                                    <h:outputText value="ACTIONS"/>
+                                                                </f:facet>
+                                                                
+                                                                    <p:commandLink actionListener="#{orderController.deleteOrderById(order.id)}" update=":myDatatable:thisDataTable">
+                                                                        <h:outputText value="Delete"/>
+                                                                    </p:commandLink>
+                                                                
+                                                            </p:column>-->
+
+
+                </p:dataTable>
+            </h:form>
+        </p>
+
+
     </h:body>
 </html>
 
