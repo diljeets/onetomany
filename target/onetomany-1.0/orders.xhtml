@@ -92,6 +92,18 @@
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Order Created"/>
+                        </f:facet>                            
+                        <h:outputText value="#{order.orderCreated}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Order Updated"/>
+                        </f:facet>                            
+                        <h:outputText value="#{order.orderUpdated}"/>
+                    </p:column>
                     <p:column headerText="Actions" style="width:100px">
                         <p:rowEditor />
                         <p:commandLink actionListener="#{orderController.deleteOrderById(order.id)}" update=":myDatatable:msgs :myDatatable:thisDataTable">

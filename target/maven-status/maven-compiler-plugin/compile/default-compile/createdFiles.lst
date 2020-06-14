@@ -1,8 +1,12 @@
+com/diljeet/onetomany/resources/CustomerService.class
+com/diljeet/onetomany/resources/OrderService.class
+com/diljeet/onetomany/ejb/OrderBean$2.class
+com/diljeet/onetomany/OnetomanyApplication.class
+com/diljeet/onetomany/web/OrderController.class
 com/diljeet/onetomany/ejb/OrderBean.class
-com/diljeet/onetomany/JAXRSConfiguration.class
-com/diljeet/onetomany/resources/JavaEE8Resource.class
+com/diljeet/onetomany/ejb/OrderBean$1.class
 com/diljeet/onetomany/web/CustomerController.class
 com/diljeet/onetomany/entity/Customer.class
 com/diljeet/onetomany/ejb/CustomerBean.class
-com/diljeet/onetomany/web/OrderController.class
+com/diljeet/onetomany/ejb/CustomerBean$1.class
 com/diljeet/onetomany/entity/Order.class

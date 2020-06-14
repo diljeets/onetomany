@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,7 +31,8 @@ import javax.persistence.TemporalType;
 @Table(name = "customer")
 @NamedQuery(
         name = "getCustomers",
-        query = "Select c from Customer c order by c.customerId"
+        //query = "Select c.customerId, c.customerName, c.dateCustomerCreated, c.dateCustomerUpdated from Customer c order by c.customerId"
+        query = "Select c from Customer c order by c.customerId desc"
 )
 public class Customer implements Serializable {
 
@@ -47,8 +49,9 @@ public class Customer implements Serializable {
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCustomerUpdated;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")    
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
+    @JsonbTransient
     private List<Order> orders = new ArrayList<>();
 
     public Customer() {
@@ -77,7 +80,8 @@ public class Customer implements Serializable {
     }
 
     public void setDateCustomerCreated(Date dateCustomerCreated) {
-        this.dateCustomerCreated = new Date();
+//        this.dateCustomerCreated = new Date();
+            this.dateCustomerCreated = dateCustomerCreated;
     }
 
     public Date getDateCustomerUpdated() {

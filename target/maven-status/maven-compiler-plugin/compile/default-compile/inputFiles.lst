@@ -1,8 +1,9 @@
-/home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/resources/JavaEE8Resource.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/web/CustomerController.java
+/home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/resources/OrderService.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/ejb/OrderBean.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/entity/Customer.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/ejb/CustomerBean.java
+/home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/resources/CustomerService.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/entity/Order.java
 /home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/web/OrderController.java
-/home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/JAXRSConfiguration.java
+/home/diljeet/NetBeansProjects/onetomany/src/main/java/com/diljeet/onetomany/OnetomanyApplication.java

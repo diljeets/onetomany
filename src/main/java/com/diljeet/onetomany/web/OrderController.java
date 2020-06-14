@@ -161,6 +161,13 @@ public class OrderController implements Serializable {
 //    }
     public void onRowEdit(RowEditEvent<Order> event) {
         orderBean.updateOrderById(event.getObject());
+        if (queryString.equals("all")) {
+            setOrders(orderBean.fetchAllOrders());
+        } else if (queryString.equals("search")) {
+            setOrders(orderBean.fetchOrdersById(searchCustomer));
+        } else {
+            setOrders(orderBean.fetchOrdersById(currentCustomer));
+        }
 
         //logger.log(Level.INFO, "value is {0}", order.getId());
 //        if((event.getObject() instanceof Order) && (event.getObject() != null)){

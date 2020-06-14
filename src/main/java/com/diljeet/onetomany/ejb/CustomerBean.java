@@ -10,11 +10,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  *
@@ -28,61 +36,76 @@ public class CustomerBean {
     // "Insert Code > Add Business Method")
     private static final Logger logger = Logger.getLogger(CustomerBean.class.getCanonicalName());
     
-    @PersistenceContext(name = "my_persistence_unit")
-    EntityManager em;
+    private Client client;
+    
+    @PostConstruct
+    private void init(){
+        client = ClientBuilder.newClient();
+    }
+    
+    @PreDestroy
+    private void clean(){
+        client.close();
+    }
+    
+//    @PersistenceContext(name = "my_persistence_unit")
+//    EntityManager em;
     
     public void addCustomer(Customer customer){
-        try{
-            if(customer != null){
-                em.persist(customer);    
-            } else {
-                return;
-            }
-           
-        } catch(Exception e) {
-            logger.log(Level.INFO, "Error saving entity {0}" , e.toString());
+        if(customer == null){
+            logger.info("Could not find Customer");
+        }
+        
+        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(customer, MediaType.APPLICATION_JSON), Response.class);
+        
+        if(response.getStatus() == Response.Status.CREATED.getStatusCode()){
+            logger.info("Customer inserted successfully");
+        } else {
+            logger.info("Problem inserting Customer");
         }
     }
     
     public List<Customer> getCustomers(){
-        List<Customer> customers = null;
-        try{
-            customers = em.createNamedQuery("getCustomers").getResultList();
-        } catch(Exception e) {
-            logger.log(Level.INFO, "Error saving entity {0}" , e.toString());
-        }
         
+        List<Customer> customers = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+                .path("all")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<Customer>>(){});        
+     
         return customers;
     }    
     
     public void updateByCustomerId(Customer customer){
         int custId = customer.getCustomerId();
-        try{
-            Customer existingCustomer = em.find(Customer.class, custId);
-            if(existingCustomer != null){                
-                existingCustomer.setCustomerName(customer.getCustomerName());
-                existingCustomer.setDateCustomerUpdated(new Date());
-            }
-            else{
-                return;
-            }
-        } catch(Exception e){
-           logger.log(Level.SEVERE, "Error updating customer {0}", e.toString());
-        }
+        String id = String.valueOf(custId);
         
+        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+                .path(id)
+                .request(MediaType.APPLICATION_JSON)
+                .put(Entity.entity(customer, MediaType.APPLICATION_JSON), Response.class);
+        
+        if(response.getStatus() == Response.Status.OK.getStatusCode()){
+            logger.info("Customer updated successfully");
+        } else {
+            logger.info("Problem updating Customer");
+        }
+      
     }
 
     public void deleteCustomerById(int custId) {
-        try{
-            Customer existingCustomer = em.find(Customer.class, custId);
-            if(existingCustomer != null){                
-                em.remove(existingCustomer);
-            }
-            else{
-                return;
-            }
-        } catch(Exception e){
-           logger.log(Level.SEVERE, "Error deleting customer {0}", e.toString());
+        String id = String.valueOf(custId);
+        
+        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+                .path(id)
+                .request(MediaType.APPLICATION_JSON)
+                .delete();
+        
+        if(response.getStatus() == Response.Status.OK.getStatusCode()){
+            logger.info("Customer deleted successfully");
+        } else {
+            logger.info("Problem deleting Customer");
         }
     }
     

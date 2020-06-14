@@ -105,7 +105,8 @@ public class Order implements Serializable {
     }
 
     public void setOrderCreated(Date orderCreated) {
-        this.orderCreated = new Date();
+        //this.orderCreated = new Date();
+        this.orderCreated = orderCreated;
     }
 
     public Date getOrderUpdated() {
