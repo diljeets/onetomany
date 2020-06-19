@@ -19,6 +19,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -40,24 +44,30 @@ import javax.persistence.TemporalType;
 //        name = "getOrders",
 //        query = "SELECT o FROM Order o ORDER BY o.id"
 //)
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlAttribute
     private Long id;    
     
     //private int customerId;
-    
+    @XmlAttribute
     private String item;
     
+    @XmlAttribute
     private String quantity;
     
     @Temporal(TemporalType.TIMESTAMP)
+    @XmlAttribute
     private Date orderCreated;
     
     @Temporal(TemporalType.TIMESTAMP)
+    @XmlAttribute
     private Date orderUpdated;
     
     @ManyToOne

@@ -22,6 +22,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,24 +41,31 @@ import javax.persistence.TemporalType;
         //query = "Select c.customerId, c.customerName, c.dateCustomerCreated, c.dateCustomerUpdated from Customer c order by c.customerId"
         query = "Select c from Customer c order by c.customerId desc"
 )
+@XmlRootElement
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlElement
     private int customerId;
 
+    @XmlElement
     private String customerName;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @XmlElement
     private Date dateCustomerCreated;
     
     @Temporal(TemporalType.TIMESTAMP)
+    @XmlElement
     private Date dateCustomerUpdated;
     
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
-    @JsonbTransient
+    @JsonbTransient    
+    @XmlTransient
     private List<Order> orders = new ArrayList<>();
 
     public Customer() {

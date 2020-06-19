@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,8 +24,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 /**
  *
@@ -40,10 +44,11 @@ public class CustomerService {
     
     @PersistenceContext(name = "my_persistence_unit")
     EntityManager em;
-    
+        
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})    
     public Response addCustomer(Customer customer){
+        
         int custId = 0;
         try{
             if(customer != null){
@@ -61,8 +66,8 @@ public class CustomerService {
     }
     
     @GET
-    @Path("all")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Path("all")    
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public List<Customer> getCustomers(){
         List<Customer> customers = null;
         try{
@@ -73,10 +78,11 @@ public class CustomerService {
         
         return customers;
     }    
+
     
     @PUT
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public Response updateByCustomerId(@PathParam("id") int custId , Customer customer){
         //int custId = customer.getCustomerId();
         try{
@@ -97,7 +103,7 @@ public class CustomerService {
 
     @DELETE
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public Response deleteCustomerById(@PathParam("id") int custId) {
         try{
             Customer existingCustomer = em.find(Customer.class, custId);

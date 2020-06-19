@@ -21,6 +21,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -56,9 +57,9 @@ public class CustomerBean {
             logger.info("Could not find Customer");
         }
         
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
-                .request(MediaType.APPLICATION_JSON)
-                .post(Entity.entity(customer, MediaType.APPLICATION_JSON), Response.class);
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Customer")
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .post(Entity.entity(customer, MediaType.APPLICATION_XML), Response.class);
         
         if(response.getStatus() == Response.Status.CREATED.getStatusCode()){
             logger.info("Customer inserted successfully");
@@ -69,9 +70,10 @@ public class CustomerBean {
     
     public List<Customer> getCustomers(){
         
-        List<Customer> customers = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+        List<Customer> customers = client.target("http://localhost:9090/onetomany/webapi/Customer")
                 .path("all")
                 .request(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .get(new GenericType<List<Customer>>(){});        
      
         return customers;
@@ -81,10 +83,10 @@ public class CustomerBean {
         int custId = customer.getCustomerId();
         String id = String.valueOf(custId);
         
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Customer")
                 .path(id)
-                .request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(customer, MediaType.APPLICATION_JSON), Response.class);
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .put(Entity.entity(customer, MediaType.APPLICATION_XML), Response.class);
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){
             logger.info("Customer updated successfully");
@@ -97,9 +99,9 @@ public class CustomerBean {
     public void deleteCustomerById(int custId) {
         String id = String.valueOf(custId);
         
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Customer")
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Customer")
                 .path(id)
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .delete();
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){

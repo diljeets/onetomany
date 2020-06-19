@@ -65,10 +65,10 @@ public class OrderBean {
             logger.info("Order is null");
         }
         
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Order")
-                .request(MediaType.APPLICATION_JSON)
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .header("customerId", customerId)
-                .post(Entity.entity(order, MediaType.APPLICATION_JSON), Response.class);
+                .post(Entity.entity(order, MediaType.APPLICATION_XML), Response.class);
                 
                
         
@@ -108,9 +108,9 @@ public class OrderBean {
     public List<Order> fetchOrdersById(int customerId) {
         //logger.log(Level.INFO, "to fetch orders by currentcustomer {0}", customerId);
         String id  = String.valueOf(customerId);
-        List<Order> orders = client.target("http://localhost:9090/onetomany-1.0/webapi/Order")
+        List<Order> orders = client.target("http://localhost:9090/onetomany/webapi/Order")
                 .path(id)
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .get(new GenericType<List<Order>>(){});
 
 //        try {
@@ -126,9 +126,9 @@ public class OrderBean {
 
     public List<Order> fetchAllOrders() {
         //logger.log(Level.INFO, "Entered fethAllOrders method");
-        List<Order> orders = client.target("http://localhost:9090/onetomany-1.0/webapi/Order")
+        List<Order> orders = client.target("http://localhost:9090/onetomany/webapi/Order")
                 .path("all")
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .get(new GenericType<List<Order>>(){});
 //        try {
 //            orders = em.createNamedQuery("fetchAllOrders").getResultList();
@@ -141,9 +141,9 @@ public class OrderBean {
 
     public void deleteOrderById(long orderId) {
         String id  = String.valueOf(orderId);
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Order")
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
                 .path(id)
-                .request(MediaType.APPLICATION_JSON)
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .delete();
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){
@@ -171,10 +171,10 @@ public class OrderBean {
         //logger.log(Level.INFO, "inside update method");        
         Long orderId = updatedOrder.getId();
         String id  = String.valueOf(orderId);
-        Response response = client.target("http://localhost:9090/onetomany-1.0/webapi/Order")
+        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
                 .path(id)
-                .request(MediaType.APPLICATION_JSON)
-                .put(Entity.entity(updatedOrder, MediaType.APPLICATION_JSON), Response.class);
+                .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .put(Entity.entity(updatedOrder, MediaType.APPLICATION_XML), Response.class);
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){
             logger.info("Order updated successfully");

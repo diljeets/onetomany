@@ -16,6 +16,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.annotation.FacesConfig;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
@@ -26,6 +27,7 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author diljeet
  */
+@FacesConfig(version = FacesConfig.Version.JSF_2_3)
 @Named(value = "customerController")
 @SessionScoped
 public class CustomerController implements Serializable{
@@ -71,7 +73,7 @@ public class CustomerController implements Serializable{
     public void addCustomer(Customer customer){
         customerBean.addCustomer(customer);        
         setCustomers(customerBean.getCustomers()); 
-        clear();
+        clear();        
     }
     
     public void deleteCustomerById(int custId){

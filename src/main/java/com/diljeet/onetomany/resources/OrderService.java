@@ -46,7 +46,7 @@ public class OrderService {
     EntityManager em;
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public Response addOrder(Order order, @HeaderParam("customerId") int customerId) {
 //        Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 //        customerId = Integer.parseInt(params.get("customerId"));
@@ -85,7 +85,7 @@ public class OrderService {
 //    }
     @GET
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public List<Order> fetchOrdersById(@PathParam("id") int customerId) {
         //logger.log(Level.INFO, "to fetch orders by currentcustomer {0}", customerId);
         List<Order> orders = null;
@@ -107,7 +107,7 @@ public class OrderService {
 
     @GET
     @Path("all")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public List<Order> fetchAllOrders() {
         //logger.log(Level.INFO, "Entered fethAllOrders method");
         List<Order> orders = null;
@@ -122,7 +122,7 @@ public class OrderService {
 
     @DELETE
     @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public Response deleteOrderById(@PathParam("id") long orderId) {
         //logger.log(Level.INFO, "Entered deleteOrderById method");
         //List<Order> orders = null;
@@ -143,7 +143,7 @@ public class OrderService {
 
     @PUT
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
     public Response updateOrderById(@PathParam("id") Long orderId, Order updatedOrder) {
         //logger.log(Level.INFO, "inside update method");        
         //Long orderId = updatedOrder.getId();
