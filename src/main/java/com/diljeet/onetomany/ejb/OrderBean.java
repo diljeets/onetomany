@@ -15,20 +15,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+//import org.jboss.ejb3.annotation.SecurityDomain;
 import org.primefaces.event.RowEditEvent;
 
 /**
@@ -37,17 +42,26 @@ import org.primefaces.event.RowEditEvent;
  */
 @Named
 @Stateful
+//@SecurityDomain("other")
+//@RunAs("Administrator")
+//@RolesAllowed("Administrator")
 public class OrderBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     private static final Logger logger = Logger.getLogger(OrderBean.class.getCanonicalName());
     
+    @Inject
+    HttpServletRequest req;
+    
     private Client client;
 
 //     private int customerId;
 //    @PersistenceContext(name = "my_persistence_unit")
 //    EntityManager em;
+
+    public OrderBean() {
+    }  
     
     @PostConstruct
     private void init(){
@@ -65,9 +79,10 @@ public class OrderBean {
             logger.info("Order is null");
         }
         
-        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
+        Response response = client.target("http://localhost:8080/onetomany/webapi/Order")
                 .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
                 .header("customerId", customerId)
+                .header("Authorization", req.getHeader("Authorization"))
                 .post(Entity.entity(order, MediaType.APPLICATION_XML), Response.class);
                 
                
@@ -108,9 +123,10 @@ public class OrderBean {
     public List<Order> fetchOrdersById(int customerId) {
         //logger.log(Level.INFO, "to fetch orders by currentcustomer {0}", customerId);
         String id  = String.valueOf(customerId);
-        List<Order> orders = client.target("http://localhost:9090/onetomany/webapi/Order")
+        List<Order> orders = client.target("http://localhost:8080/onetomany/webapi/Order")
                 .path(id)
                 .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .header("Authorization", req.getHeader("Authorization"))
                 .get(new GenericType<List<Order>>(){});
 
 //        try {
@@ -126,9 +142,10 @@ public class OrderBean {
 
     public List<Order> fetchAllOrders() {
         //logger.log(Level.INFO, "Entered fethAllOrders method");
-        List<Order> orders = client.target("http://localhost:9090/onetomany/webapi/Order")
+        List<Order> orders = client.target("http://localhost:8080/onetomany/webapi/Order")
                 .path("all")
                 .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .header("Authorization", req.getHeader("Authorization"))
                 .get(new GenericType<List<Order>>(){});
 //        try {
 //            orders = em.createNamedQuery("fetchAllOrders").getResultList();
@@ -141,9 +158,10 @@ public class OrderBean {
 
     public void deleteOrderById(long orderId) {
         String id  = String.valueOf(orderId);
-        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
+        Response response = client.target("http://localhost:8080/onetomany/webapi/Order")
                 .path(id)
                 .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .header("Authorization", req.getHeader("Authorization"))
                 .delete();
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){
@@ -171,9 +189,10 @@ public class OrderBean {
         //logger.log(Level.INFO, "inside update method");        
         Long orderId = updatedOrder.getId();
         String id  = String.valueOf(orderId);
-        Response response = client.target("http://localhost:9090/onetomany/webapi/Order")
+        Response response = client.target("http://localhost:8080/onetomany/webapi/Order")
                 .path(id)
                 .request(MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML)
+                .header("Authorization", req.getHeader("Authorization"))
                 .put(Entity.entity(updatedOrder, MediaType.APPLICATION_XML), Response.class);
         
         if(response.getStatus() == Response.Status.OK.getStatusCode()){

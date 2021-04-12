@@ -18,7 +18,7 @@ public class OnetomanyApplication extends Application {
         final Set<Class<?>> classes = new HashSet<>();
         // register root resource
         classes.add(CustomerService.class);
-        classes.add(OrderService.class);
+        classes.add(OrderService.class);        
         return classes;
     }
 }

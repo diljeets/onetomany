@@ -160,6 +160,7 @@ public class OrderController implements Serializable {
 //        }
 //    }
     public void onRowEdit(RowEditEvent<Order> event) {
+//        logger.log(Level.SEVERE, "Updated Item is {0}", event.getObject().getItem()); 
         orderBean.updateOrderById(event.getObject());
         if (queryString.equals("all")) {
             setOrders(orderBean.fetchAllOrders());

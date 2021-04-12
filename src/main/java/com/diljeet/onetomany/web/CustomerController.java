@@ -8,10 +8,14 @@ package com.diljeet.onetomany.web;
 import com.diljeet.onetomany.ejb.CustomerBean;
 import com.diljeet.onetomany.entity.Customer;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -19,6 +23,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.annotation.FacesConfig;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+//import org.jboss.ejb3.annotation.SecurityDomain;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.RowEditEvent;
@@ -34,7 +39,7 @@ public class CustomerController implements Serializable{
     private static final Logger logger = Logger.getLogger(CustomerController.class.getCanonicalName());
     private static final long serialVersionUID = 2142383151318489373L;
     
-    @EJB
+    @EJB    
     private CustomerBean customerBean;
     
     private Customer customer;
@@ -51,7 +56,7 @@ public class CustomerController implements Serializable{
      * Creates a new instance of onetomanyController
      */
     public CustomerController() {
-        
+               
     }
 
     public Customer getCustomer() {
@@ -87,6 +92,7 @@ public class CustomerController implements Serializable{
     }
     
     public void onRowEdit(RowEditEvent<Customer> event) {
+        logger.log(Level.SEVERE, "Updated name is {0}", event.getObject().getCustomerName());        
         customerBean.updateByCustomerId(event.getObject()); 
         setCustomers(customerBean.getCustomers());
     }

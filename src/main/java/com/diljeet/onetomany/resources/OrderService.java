@@ -13,7 +13,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -35,6 +38,7 @@ import javax.ws.rs.core.Response;
  */
 @Stateless
 @Path("/Order")
+@RolesAllowed("Administrator")
 public class OrderService {
 
     // Add business logic below. (Right-click in editor and choose
@@ -44,6 +48,9 @@ public class OrderService {
 //     private int customerId;
     @PersistenceContext(name = "my_persistence_unit")
     EntityManager em;
+
+    public OrderService() {
+    }
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
@@ -107,7 +114,7 @@ public class OrderService {
 
     @GET
     @Path("all")
-    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_JSON , MediaType.APPLICATION_XML})    
     public List<Order> fetchAllOrders() {
         //logger.log(Level.INFO, "Entered fethAllOrders method");
         List<Order> orders = null;

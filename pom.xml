@@ -28,12 +28,23 @@
             <artifactId>primefaces</artifactId>
             <version>8.0</version>
         </dependency>
-<!--        <dependency>
+        <dependency>
+            <groupId>org.jboss.ejb3</groupId>
+            <artifactId>jboss-ejb3-ext-api</artifactId>
+            <version>2.3.0.Final</version>
+        </dependency>
+        <!--        <dependency>
             <groupId>org.jboss.resteasy</groupId>
             <artifactId>resteasy-jaxb-provider</artifactId>
             <version>2.2.0.GA</version>
             <scope>provided</scope>
-        </dependency>        -->
+        </dependency>           -->
+        <!--        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-jaxrs</artifactId>
+            <version>4.0.0.Beta5</version>
+            <scope>provided</scope>
+        </dependency>     -->
     </dependencies>
     
     <build>

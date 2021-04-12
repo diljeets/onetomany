@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -58,19 +59,18 @@ public class Customer implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @XmlElement
     private Date dateCustomerCreated;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     @XmlElement
     private Date dateCustomerUpdated;
-    
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "customer")
-    @JsonbTransient    
+    @JsonbTransient
     @XmlTransient
     private List<Order> orders = new ArrayList<>();
 
     public Customer() {
-        dateCustomerCreated = new Date();
-        //this.setDateCustomerCreated(dateCustomerCreated);
+//        this.dateCustomerCreated = new Date();
     }
 
     public int getCustomerId() {
@@ -95,7 +95,7 @@ public class Customer implements Serializable {
 
     public void setDateCustomerCreated(Date dateCustomerCreated) {
 //        this.dateCustomerCreated = new Date();
-            this.dateCustomerCreated = dateCustomerCreated;
+        this.dateCustomerCreated = dateCustomerCreated;
     }
 
     public Date getDateCustomerUpdated() {
@@ -104,7 +104,7 @@ public class Customer implements Serializable {
 
     public void setDateCustomerUpdated(Date dateCustomerUpdated) {
         this.dateCustomerUpdated = dateCustomerUpdated;
-    }  
+    }
 
     public List<Order> getOrders() {
         return orders;
@@ -122,8 +122,7 @@ public class Customer implements Serializable {
     public void removeOrder(Order order) {
         orders.remove(order);
         order.setCustomer(null);
-    }  
-   
+    }
 
     @Override
     public int hashCode() {
