@@ -72,9 +72,9 @@
         <auth-constraint>            
             <role-name>Administrator</role-name>
         </auth-constraint>      
-        <auth-constraint>            
+<!--        <auth-constraint>            
             <role-name>Manager</role-name>
-        </auth-constraint>
+        </auth-constraint>-->
         <user-data-constraint>                        
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
